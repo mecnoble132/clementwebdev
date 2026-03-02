@@ -342,7 +342,7 @@ projects.forEach(p => {
   const card = document.createElement('div');
   card.className = 'card';
   card.setAttribute('data-id', p.id);
-  card.style.cursor = 'pointer';
+  card.style.cursor = 'none';
   card.innerHTML = `
     <div class="card-img">${p.thumb?`<img src="${p.thumb}" alt="${p.title}" loading="lazy">`:ph(p.thumbLabel,p.thumbGradient)}</div>
     <div class="card-body">
@@ -354,6 +354,8 @@ projects.forEach(p => {
       <a href="${p.url}" target="_blank" rel="noopener" class="btn btn-primary">View Site ↗</a>
       <button class="btn btn-secondary" data-id="${p.id}">Show More</button>
     </div>`;
+  card.addEventListener('mouseenter', cursorGrow);
+  card.addEventListener('mouseleave', cursorShrink);
   grid.appendChild(card);
 });
 
