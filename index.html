@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clement Cruz — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #0d0d0f;
+  --surface:      #141416;
+  --surface-2:    #1c1c20;
+  --ink:          #f0eee8;
+  --ink-soft:     #8a8780;
+  --ink-muted:    #4a4845;
+  --accent:       #7c6af7;
+  --accent-glow:  rgba(124,106,247,0.25);
+  --accent-dim:   rgba(124,106,247,0.12);
+  --accent-hover: #9585ff;
+  --border:       rgba(255,255,255,0.07);
+  --border-card:  rgba(255,255,255,0.06);
+  --shadow:       0 4px 20px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3);
+  --shadow-hover: 0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(124,106,247,0.2), 0 0 32px var(--accent-glow);
+  --radius:       16px;
+  --font:         'Outfit', sans-serif;
+  --font-display: 'Instrument Serif', serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  min-height: 100vh;
+  cursor: none;
+}
+
+/* NOISE */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* CURSOR */
+#cursor {
+  position: fixed; z-index: 9999; pointer-events: none;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent); transform: translate(-50%,-50%);
+  mix-blend-mode: screen;
+  transition: width 0.2s, height 0.2s;
+}
+#cursor-ring {
+  position: fixed; z-index: 9998; pointer-events: none;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid rgba(124,106,247,0.5);
+  transform: translate(-50%,-50%);
+}
+@media (pointer: coarse) { #cursor, #cursor-ring { display: none; } body { cursor: auto; } }
+
+/* BLOBS */
+.blob { position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; opacity: 0.1; }
+.blob-1 { width: 500px; height: 500px; background: var(--accent); top: -150px; right: -80px; }
+.blob-2 { width: 380px; height: 380px; background: #2563eb; bottom: 100px; left: -120px; }
+
+/* HEADER */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,13,15,0.88);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; height: 60px; position: relative; z-index: 1;
+}
+.logo {
+  font-family: var(--font-display); font-size: 1.2rem; font-style: italic;
+  color: var(--ink); text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+}
+.logo-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+  animation: pulse-dot 2.4s ease-in-out infinite; flex-shrink: 0;
+}
+@keyframes pulse-dot {
+  0%,100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+  50%      { box-shadow: 0 0 0 6px transparent; }
+}
+.header-contact {
+  font-size: 0.82rem; font-weight: 500; color: var(--ink-soft);
+  text-decoration: none; padding: 7px 16px; border-radius: 10px;
+  border: 1px solid var(--border-card);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.header-contact:hover { color: var(--ink); border-color: rgba(255,255,255,0.14); background: var(--surface-2); }
+
+/* MAIN */
+main {
+  max-width: 1200px; margin: 0 auto;
+  padding: 52px 28px 100px;
+  position: relative; z-index: 1;
+}
+
+.section-header {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 36px;
+}
+.section-label {
+  font-size: 0.72rem; font-weight: 600; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap;
+}
+.section-line { flex: 1; height: 1px; background: var(--border); }
+.section-header h1 {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 1.75rem; font-weight: 400; color: var(--ink); white-space: nowrap;
+}
+
+/* GRID */
+.grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+@media (max-width: 1023px) { .grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 599px)  { .grid { grid-template-columns: 1fr; gap: 14px; } }
+
+/* CARD */
+.card {
+  background: var(--surface); border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+  border: 1px solid var(--border-card); position: relative;
+}
+.card::after {
+  content: ''; position: absolute; inset: 0; border-radius: var(--radius);
+  background: linear-gradient(135deg,rgba(255,255,255,0.03) 0%,transparent 60%);
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .card:hover { transform: translateY(-7px) scale(1.01); box-shadow: var(--shadow-hover); }
+  .card:hover .card-img img { transform: scale(1.06); }
+}
+.card-img {
+  width: 100%; aspect-ratio: 16/9; overflow: hidden;
+  background: var(--surface-2);
+}
+.card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.card-img .img-placeholder {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-style: italic; font-size: 1.4rem;
+  color: rgba(255,255,255,0.4); letter-spacing: -0.02em;
+}
+.card-body { padding: 20px 20px 8px; flex: 1; }
+.card-tag {
+  font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.09em; color: var(--accent); margin-bottom: 6px; display: block;
+}
+.card-title { font-size: 1.05rem; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 8px; }
+.card-desc  { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.65; font-weight: 300; }
+.card-footer { display: flex; gap: 10px; padding: 16px 20px 20px; }
+
+.btn {
+  flex: 1; padding: 11px 14px; border-radius: 10px; font-size: 0.85rem;
+  font-weight: 500; font-family: var(--font); cursor: none;
+  border: none; transition: all 0.2s ease;
+  text-align: center; text-decoration: none; display: inline-flex;
+  align-items: center; justify-content: center; min-height: 44px;
+}
+@media (pointer: coarse) { .btn { cursor: pointer; } }
+.btn-primary {
+  background: var(--accent); color: #fff;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+.btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(124,106,247,0.4); }
+.btn-secondary {
+  background: var(--surface-2); color: var(--ink-soft);
+  border: 1px solid var(--border-card);
+}
+.btn-secondary:hover { color: var(--ink); border-color: rgba(255,255,255,0.12); }
+
+/* MODAL */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.82); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+.modal {
+  background: var(--surface); border-radius: 20px;
+  max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(124,106,247,0.15), 0 0 60px rgba(124,106,247,0.08);
+  animation: scaleIn 0.25s cubic-bezier(0.34,1.2,0.64,1);
+}
+@keyframes scaleIn {
+  from { opacity:0; transform:scale(0.93) translateY(12px); }
+  to   { opacity:1; transform:scale(1)    translateY(0); }
+}
+.modal-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 28px 28px 0; gap: 16px;
+}
+.modal-title-group { display: flex; flex-direction: column; gap: 5px; }
+.modal-tag  { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--accent); }
+.modal-title { font-family: var(--font-display); font-style: italic; font-size: 1.7rem; font-weight: 400; color: var(--ink); line-height: 1.15; }
+.modal-close {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--surface-2); border: 1px solid var(--border);
+  cursor: none; display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; color: var(--ink-soft); flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s;
+}
+@media (pointer: coarse) { .modal-close { cursor: pointer; } }
+.modal-close:hover { color: var(--ink); border-color: rgba(255,255,255,0.15); }
+.modal-desc {
+  padding: 12px 28px 22px; font-size: 0.92rem; color: var(--ink-soft);
+  line-height: 1.75; font-weight: 300; border-bottom: 1px solid var(--border);
+}
+.modal-gallery { padding: 22px 28px 10px; display: flex; flex-direction: column; gap: 20px; }
+.screenshot-wrap { display: flex; flex-direction: column; gap: 8px; }
+.screenshot-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); }
+.modal-img {
+  width: 100%; border-radius: 12px; overflow: hidden;
+  background: var(--surface-2); aspect-ratio: 16/9; border: 1px solid var(--border);
+}
+.modal-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.modal-img .img-placeholder {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-style: italic; font-size: 1.4rem;
+  color: rgba(255,255,255,0.28); letter-spacing: -0.02em;
+}
+.modal-actions { padding: 20px 28px 28px; display: flex; gap: 12px; }
+.modal-actions .btn { flex: none; padding: 12px 28px; }
+
+/* FOOTER */
+footer {
+  text-align: center; padding: 28px;
+  font-size: 0.78rem; color: var(--ink-muted);
+  border-top: 1px solid var(--border); position: relative; z-index: 1;
+}
+footer span { color: var(--accent); }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 3px; }
+
+/* CARD ENTRY */
+@keyframes cardIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.card { animation: cardIn 0.45s ease both; }
+.card:nth-child(1){animation-delay:0.04s}
+.card:nth-child(2){animation-delay:0.10s}
+.card:nth-child(3){animation-delay:0.16s}
+.card:nth-child(4){animation-delay:0.22s}
+.card:nth-child(5){animation-delay:0.28s}
+.card:nth-child(6){animation-delay:0.34s}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo">Clement Cruz <div class="logo-dot"></div></a>
+    <a href="https://instagram.com/clement_cruz" target="_blank" rel="noopener" class="header-contact">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px;margin-top:-2px"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>@clement_cruz
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="section-header">
+    <span class="section-label">Portfolio</span>
+    <div class="section-line"></div>
+    <h1>My Projects</h1>
+  </div>
+  <div class="grid" id="projectGrid"></div>
+</main>
+
+<footer>© 2026 Clement Cruz · All rights reserved · <a href="https://instagram.com/clement_cruz" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">@clement_cruz</a></footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <span class="modal-tag" id="modalTag"></span>
+        <h2 class="modal-title" id="modalTitle"></h2>
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    </div>
+    <p class="modal-desc" id="modalDesc"></p>
+    <div class="modal-gallery"><div id="modalImages"></div></div>
+    <div class="modal-actions">
+      <a href="#" class="btn btn-primary" id="modalLink" target="_blank" rel="noopener">View Live Site ↗</a>
+      <button class="btn btn-secondary" id="modalCloseBottom">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx=-100,my=-100,rx=-100,ry=-100;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+(function tick(){
+  cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(tick);
+})();
+function cursorGrow()  { cursor.style.width='18px'; cursor.style.height='18px'; ring.style.width='52px'; ring.style.height='52px'; ring.style.borderColor='rgba(124,106,247,0.9)'; }
+function cursorShrink(){ cursor.style.width='10px'; cursor.style.height='10px'; ring.style.width='36px'; ring.style.height='36px'; ring.style.borderColor='rgba(124,106,247,0.5)'; }
+document.querySelectorAll('a,button').forEach(el => { el.addEventListener('mouseenter',cursorGrow); el.addEventListener('mouseleave',cursorShrink); });
+
+// Data
+const projects = [
+  {
+    id:1, tag:"Go-Karting", title:"Funplex Go-Karting",
+    desc:"A high-energy website for Funplex, a go-karting destination — built to excite visitors and drive bookings.",
+    url:"https://www.funplex.in", thumb:"images/funplex/hero.png", thumbLabel:"Funplex",
+    screenshots:["images/funplex/hero.png","images/funplex/gallery.png","images/funplex/pricing.png"], screenshotLabels:["Hero","Gallery","Pricing"],
+    thumbGradient:"linear-gradient(135deg,#0f0a00,#3a1f00,#6b3800)",
+    screenshotGradients:["linear-gradient(135deg,#0f0a00,#3a1f00)","linear-gradient(135deg,#1a1000,#2e1800)","linear-gradient(135deg,#1a1000,#2e1800)"],
+  }
+];
+
+function ph(label,grad){ return `<div class="img-placeholder" style="background:${grad}">${label}</div>`; }
+
+const grid = document.getElementById('projectGrid');
+projects.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-img">${p.thumb?`<img src="${p.thumb}" alt="${p.title}" loading="lazy">`:ph(p.thumbLabel,p.thumbGradient)}</div>
+    <div class="card-body">
+      <span class="card-tag">${p.tag}</span>
+      <div class="card-title">${p.title}</div>
+      <div class="card-desc">${p.desc}</div>
+    </div>
+    <div class="card-footer">
+      <a href="${p.url}" target="_blank" rel="noopener" class="btn btn-primary">View Site ↗</a>
+      <button class="btn btn-secondary" data-id="${p.id}">Show More</button>
+    </div>`;
+  grid.appendChild(card);
+});
+
+// Re-apply cursor to dynamic elements
+document.querySelectorAll('.card a,.card button').forEach(el => {
+  el.addEventListener('mouseenter',cursorGrow);
+  el.addEventListener('mouseleave',cursorShrink);
+});
+
+// Modal
+const overlay  = document.getElementById('modalOverlay');
+const closeBtn = document.getElementById('modalClose');
+const closeBotm= document.getElementById('modalCloseBottom');
+
+function openModal(p) {
+  document.getElementById('modalTag').textContent   = p.tag;
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalDesc').textContent  = p.desc;
+  document.getElementById('modalLink').href         = p.url;
+  const imgs = document.getElementById('modalImages');
+  imgs.innerHTML = '';
+  p.screenshots.forEach((src,i) => {
+    const w = document.createElement('div');
+    w.className = 'screenshot-wrap';
+    w.innerHTML = `<div class="screenshot-label">${p.screenshotLabels[i]}</div>
+      <div class="modal-img">${src?`<img src="${src}" alt="${p.screenshotLabels[i]}" loading="lazy">`:ph(p.screenshotLabels[i],p.screenshotGradients[i])}</div>`;
+    imgs.appendChild(w);
+  });
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  closeBtn.focus();
+}
+function closeModal(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-id]');
+  if (btn) { const p = projects.find(x=>x.id==btn.dataset.id); if(p) openModal(p); }
+});
+closeBtn.addEventListener('click', closeModal);
+closeBotm.addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if(e.target===overlay) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+</script>
+</body>
+</html>
