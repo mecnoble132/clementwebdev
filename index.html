@@ -203,7 +203,7 @@ main {
 }
 .modal-header {
   display: flex; align-items: flex-start; justify-content: space-between;
-  padding: 28px 28px 0; gap: 16px;
+  padding: 28px 28px 16px; gap: 16px;
 }
 .modal-title-group { display: flex; flex-direction: column; gap: 5px; }
 .modal-tag  { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--accent); }
@@ -218,12 +218,12 @@ main {
 @media (pointer: coarse) { .modal-close { cursor: pointer; } }
 .modal-close:hover { color: var(--ink); border-color: rgba(255,255,255,0.15); }
 .modal-desc {
-  padding: 12px 28px 22px; font-size: 0.92rem; color: var(--ink-soft);
+  padding: 16px 28px 16px; font-size: 0.92rem; color: var(--ink-soft);
   line-height: 1.75; font-weight: 300; border-bottom: 1px solid var(--border);
 }
-.modal-gallery { padding: 22px 28px 10px; display: flex; flex-direction: column; gap: 20px; }
-.screenshot-wrap { display: flex; flex-direction: column; gap: 8px; }
-.screenshot-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); }
+.modal-gallery { padding: 16px 28px 16px; display: flex; flex-direction: column; gap: 20px; }
+.screenshot-wrap { display: flex; flex-direction: column; gap: 12px; }
+.screenshot-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin: 0; display: block; padding: 20px 0 12px 0; }
 .modal-img {
   width: 100%; border-radius: 12px; overflow: hidden;
   background: var(--surface-2); aspect-ratio: 16/9; border: 1px solid var(--border);
@@ -234,7 +234,7 @@ main {
   font-family: var(--font-display); font-style: italic; font-size: 1.4rem;
   color: rgba(255,255,255,0.28); letter-spacing: -0.02em;
 }
-.modal-actions { padding: 20px 28px 28px; display: flex; gap: 12px; }
+.modal-actions { padding: 16px 28px 28px; display: flex; gap: 12px; }
 .modal-actions .btn { flex: none; padding: 12px 28px; }
 
 /* FOOTER */
@@ -279,9 +279,9 @@ footer span { color: var(--accent); }
 
 <main>
   <div class="section-header">
-    <span class="section-label">Portfolio</span>
-    <div class="section-line"></div>
     <h1>My Projects</h1>
+    <div class="section-line"></div>
+    <span class="section-label">Portfolio</span>
   </div>
   <div class="grid" id="projectGrid"></div>
 </main>
